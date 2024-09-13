@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="reset.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Document</title>
+</head>
+
+<body>
+
+</body>
+<script src="native.js"></script>
+<script>
+
+
+
+    var boleta = true;
+    var ints = 1
+
+    MenuPrincipal()
+
+    function MenuPrincipal() {
+
+        createMenu('Base', () => {
+            addOption('addOption', '', (e) => {
+                //MenuSecundario()
+                console.log(e)
+            })
+            addOption('addOption com info', 'Info aqui', () => {
+
+            })
+            addBool('addBool', boleta, '', (resultado) => {
+                boleta = resultado
+                console.log(boleta)
+            })
+            addInt('addInt', ints, 0, 10, '', (resultado) => {
+                ints = resultado
+                console.log(ints)
+            })
+
+            addSubmenu('addSubmenu', Menu2, 'addSubmenu')
+
+            addColor('addColor', '#0066ff'/*valor inicial*/, 'cor', (resultado) => {
+                scrollerColor = resultado
+            })
+            add2Color('addColor', bannerColor1/*valor inicial*/, bannerColor2/*valor inicial*/, 'cor', (x, y) => {
+                bannerColor1 = x
+                bannerColor2 = y
+            })
+
+            addRange('addRange', 5/*valor inicial*/, 0, 10, 'cor', (resultado) => {
+                console.log(resultado)
+            })
+
+            addNumber('addNumber', 5/*valor inicial*/, 0, 10, 'cor', (resultado) => {
+                console.log(resultado)
+            })
+
+            addText('addText', 'Base', 'placeholder', '', (resultado) => {
+                document.getElementById('banner').innerHTML = '<center>' + resultado + '</center>'
+            })
+            addBreak('addBreak')
+
+            addOption('addSideBox', 'Create ~y~side box~s~ at right of menu', () => {
+                addSideBox(200, 200)
+            })
+
+            addOption('addSideBox Img', 'Insert ~b~img~s~ in side box', () => {
+                const i = document.createElement('img')
+                i.src = 'ferro.png'
+                i.style.width = '100%'
+                i.style.height = '100%'
+                document.getElementById('lateral').append(i)
+            })
+
+            addButton('addButton','Click me','', () => {
+                alert('click')
+            })
+
+            addTextAndButton('addTextAndButton','Bla bla','Click me','', (resultado) => {
+                alert(resultado)
+            })
+
+        })
+    }
+
+
+    function Menu2() {
+
+        createMenu('Menu2', () => {
+
+            addSubmenu('Voltar', MenuPrincipal)
+
+        })
+    }
+
+
+
+
+
+    function addButton(texto,btnText, info = '', voids = () => { }) {
+        const v = addOption(texto )
+
+        const div = document.createElement('div')
+        div.style.float = 'right'
+
+        const bt = document.createElement('button')
+        bt.innerHTML=btnText
+        bt.style.cursor='pointer'
+        bt.style.fontSize=(optionsFontSize-3)+'px'
+        bt.style.color = fontColor
+
+        div.append(bt)
+        v.append(div)
+
+        bt.addEventListener('click',()=>{
+            voids()
+        })
+        return v
+    }
+
+    function addTextAndButton(texto,impText,btnText, info = '', voids = () => { }) {
+        const v = addOption(texto )
+
+        const div = document.createElement('div')
+        div.style.float = 'right'
+
+        const imp = document.createElement('input')
+        imp.style.cursor='pointer'
+        imp.style.border='1px solid ' +fontColor
+        imp.style.height=(optionsFontSize-3)+'px'
+        imp.style.fontSize=(optionsFontSize-3)+'px'
+        imp.style.width=(optionsFontSize*5)+'px'
+        imp.value=impText
+        imp.style.color = fontColor
+
+        const bt = document.createElement('button')
+        bt.innerHTML=btnText
+        bt.style.cursor='pointer'
+        bt.style.border='1px solid ' +fontColor
+        bt.style.fontSize=(optionsFontSize-3)+'px'
+        bt.style.marginLeft='3px'
+        bt.style.color = fontColor
+
+        div.append(imp)
+        div.append(bt)
+        v.append(div)
+
+        bt.addEventListener('click',()=>{
+            voids(imp.value)
+        })
+        return v
+    }
+    //menuX
+    //larguraMenu
+
+
+
+</script>
+
+</html>
