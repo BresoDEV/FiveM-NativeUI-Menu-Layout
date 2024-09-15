@@ -12,6 +12,7 @@
 
 <body>
 
+
 </body>
 <script src="native.js"></script>
 <script>
@@ -26,9 +27,12 @@
     function MenuPrincipal() {
 
         createMenu('Base', () => {
+
+            addSubmenu('Configs', ConfigMenu, 'addSubmenu')
+            addBreak()
+
             addOption('addOption', '', (e) => {
-                //MenuSecundario()
-                console.log(e)
+                //clicked
             })
             addOption('addOption com info', 'Info aqui', () => {
 
@@ -42,15 +46,12 @@
                 console.log(ints)
             })
 
+            
+
+
             addSubmenu('addSubmenu', Menu2, 'addSubmenu')
 
-            addColor('addColor', '#0066ff'/*valor inicial*/, 'cor', (resultado) => {
-                scrollerColor = resultado
-            })
-            add2Color('addColor', bannerColor1/*valor inicial*/, bannerColor2/*valor inicial*/, 'cor', (x, y) => {
-                bannerColor1 = x
-                bannerColor2 = y
-            })
+
 
             addRange('addRange', 5/*valor inicial*/, 0, 10, 'cor', (resultado) => {
                 console.log(resultado)
@@ -77,11 +78,11 @@
                 document.getElementById('lateral').append(i)
             })
 
-            addButton('addButton','Click me','', () => {
+            addButton('addButton', 'Click me', '', () => {
                 alert('click')
             })
 
-            addTextAndButton('addTextAndButton','Bla bla','Click me','', (resultado) => {
+            addTextAndButton('addTextAndButton', 'Bla bla', 'Click me', '', (resultado) => {
                 alert(resultado)
             })
 
@@ -94,7 +95,51 @@
         createMenu('Menu2', () => {
 
             addSubmenu('Voltar', MenuPrincipal)
+            addBreak()
 
+            addInfo('Lorem ipsum dolor sit amet ~y~consectetur~s~ adipisicing elit. Quos dolores voluptatum, eum aliquid facilis quibusdam neque tempora. Ut fugiat aliquam sunt excepturi, consectetur autem ea, voluptatibus cum necessitatibus quis repellat?')
+
+
+            addOption('1 = ~y~&#9673;')
+            addOption('2 = ~y~&#9733;')
+            addOption('3 = ~y~&#10687;')
+            addOption('4 = ~y~&#11044;')
+            addOption('5 = ~y~&#9745;')
+            addOption('6 = ~y~&#9746;')
+
+        })
+    }
+
+
+
+    function ConfigMenu() {
+        createMenu('Config', () => {
+
+            addSubmenu('Voltar', MenuPrincipal)
+            addBreak()
+
+            addColor('Scroll', scrollerColor/*valor inicial*/, 'cor', (resultado) => {
+                scrollerColor = resultado
+            })
+
+            addColor('Banner Font', topFontColor/*valor inicial*/, 'cor', (resultado) => {
+                topFontColor = resultado
+            })
+
+            add2Color('Banner', bannerColor1/*valor inicial*/, bannerColor2/*valor inicial*/, 'cor', (x, y) => {
+                bannerColor1 = x
+                bannerColor2 = y
+            })
+
+            addColor('Menu BG', bgColor/*valor inicial*/, 'cor', (resultado) => {
+                bgColor = resultado
+            })
+            addColor('fontColor', fontColor/*valor inicial*/, 'cor', (resultado) => {
+                fontColor = resultado
+            })
+            addColor('hoverFontColor', hoverFontColor/*valor inicial*/, 'cor', (resultado) => {
+                hoverFontColor = resultado
+            })
         })
     }
 
@@ -102,61 +147,11 @@
 
 
 
-    function addButton(texto,btnText, info = '', voids = () => { }) {
-        const v = addOption(texto )
+   
 
-        const div = document.createElement('div')
-        div.style.float = 'right'
 
-        const bt = document.createElement('button')
-        bt.innerHTML=btnText
-        bt.style.cursor='pointer'
-        bt.style.fontSize=(optionsFontSize-3)+'px'
-        bt.style.color = fontColor
 
-        div.append(bt)
-        v.append(div)
 
-        bt.addEventListener('click',()=>{
-            voids()
-        })
-        return v
-    }
-
-    function addTextAndButton(texto,impText,btnText, info = '', voids = () => { }) {
-        const v = addOption(texto )
-
-        const div = document.createElement('div')
-        div.style.float = 'right'
-
-        const imp = document.createElement('input')
-        imp.style.cursor='pointer'
-        imp.style.border='1px solid ' +fontColor
-        imp.style.height=(optionsFontSize-3)+'px'
-        imp.style.fontSize=(optionsFontSize-3)+'px'
-        imp.style.width=(optionsFontSize*5)+'px'
-        imp.value=impText
-        imp.style.color = fontColor
-
-        const bt = document.createElement('button')
-        bt.innerHTML=btnText
-        bt.style.cursor='pointer'
-        bt.style.border='1px solid ' +fontColor
-        bt.style.fontSize=(optionsFontSize-3)+'px'
-        bt.style.marginLeft='3px'
-        bt.style.color = fontColor
-
-        div.append(imp)
-        div.append(bt)
-        v.append(div)
-
-        bt.addEventListener('click',()=>{
-            voids(imp.value)
-        })
-        return v
-    }
-    //menuX
-    //larguraMenu
 
 
 

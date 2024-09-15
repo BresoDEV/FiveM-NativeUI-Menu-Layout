@@ -1,17 +1,28 @@
 
-const menuX = 20
-const menuY = 20
+const menuX = 50
+const menuY = 50
 const topFontSize = 36
 const optionsFontSize = 15
 const headersFontSize = 11
 const larguraMenu = 350
 const maxOptions = 15
-var scrollerColor = 'white'
-var bannerColor1 ='#0066ff'
-var bannerColor2 ='#86adf3'
-var bgColor ='black'
-var fontColor ='white'
+var scrollerColor = '#ffffff'
+var bannerColor1 = '#0066ff'
+var bannerColor2 = '#86adf3'
+var bgColor = '#000000'
+var fontColor = '#ffffff'
+var topFontColor = '#ffffff'
+var hoverFontColor = '#000000'
+var boolIcon = '&#10687;' //'&#11044;'
 
+var exibirLogs = false
+
+var consoles = {
+    log(t) {
+        if (exibirLogs) { console.log(t) }
+    }
+}
+consoles.log('1')
 //---------------------
 //não mexer
 var addStyle = false
@@ -35,7 +46,7 @@ function createMenu(titulo, voids) {
                             *{
                                 user-select:none;
                                 -webkit-tap-highlight-color: transparent;
-    -webkit-touch-callout: none;
+                                -webkit-touch-callout: none;
                             }
                             input{
                                 -webkit-appearance: none;
@@ -56,6 +67,7 @@ function createMenu(titulo, voids) {
                                 cursor: pointer;
                                 border-radius: 100%;
                             }
+                            
                             `
         document.head.append(estilo)
         addStyle = true
@@ -64,7 +76,7 @@ function createMenu(titulo, voids) {
 
 
     if (document.getElementById('banner')) {
-        document.getElementById('banner').innerHTML = '<center>' + rockstarTag(titulo) + '</center>'
+        document.getElementById('banner').innerHTML = fonteCursiva(rockstarTag(titulo))
     } else {
         const banner = document.createElement('div')
         banner.id = 'banner'
@@ -73,17 +85,18 @@ function createMenu(titulo, voids) {
         banner.style.top = menuY + 'px'
         banner.style.width = larguraMenu + 'px'
         banner.style.fontSize = topFontSize + 'px'
-        banner.style.fontFamily = 'cursive'
+        // banner.style.fontFamily = 'cursive'
+        banner.style.textAlign = 'center'
 
         banner.style.paddingTop = (topFontSize / 4) + 'px'
         banner.style.paddingBottom = (topFontSize / 4) + 'px'
 
-       
 
 
-        banner.style.background = 'linear-gradient(to right,'+bannerColor1+', '+bannerColor2+')'
+
+        banner.style.background = 'linear-gradient(to right,' + bannerColor1 + ', ' + bannerColor2 + ')'
         //banner.style.background = 'linear-gradient(to right,#0066ff, #86adf3)'
-        banner.innerHTML = '<center>' + rockstarTag(titulo) + '</center>'
+        banner.innerHTML = fonteCursiva(rockstarTag(titulo))
 
         document.body.append(banner)
     }
@@ -161,7 +174,9 @@ function createMenu(titulo, voids) {
     }
 }
 
-setInterval(() => {
+
+
+createHook(() => {
     if (totalOptions !== 0) {
         if (document.getElementById('headers')) {
             document.getElementById('headers').innerHTML = currentOption + '/' + totalOptions
@@ -179,20 +194,23 @@ setInterval(() => {
     }
 
     if (document.getElementById('banner')) {
+        document.getElementById('banner').style.color = topFontColor
         document.getElementById('banner').style.left = menuX + 'px'
         document.getElementById('banner').style.top = menuY + 'px'
         document.getElementById('banner').style.width = larguraMenu + 'px'
         document.getElementById('banner').style.fontSize = topFontSize + 'px'
         document.getElementById('banner').style.paddingTop = (topFontSize / 4) + 'px'
         document.getElementById('banner').style.paddingBottom = (topFontSize / 4) + 'px'
-        document.getElementById('banner').style.background = 'linear-gradient(to right,'+bannerColor1+', '+bannerColor2+')'
+        document.getElementById('banner').style.background = 'linear-gradient(to right,' + bannerColor1 + ', ' + bannerColor2 + ')'
     }
 
     if (document.getElementById('headers')) {
+        document.getElementById('headers').style.backgroundColor = bgColor
         document.getElementById('headers').style.left = menuX + 'px'
         document.getElementById('headers').style.top = (menuY + document.getElementById('banner').offsetHeight) + 'px'
         document.getElementById('headers').style.width = (larguraMenu - 10) + 'px'
         document.getElementById('headers').style.fontSize = headersFontSize + 'px'
+        document.getElementById('headers').style.color = fontColor
     }
     if (document.getElementById('corpo')) {
         document.getElementById('corpo').style.left = menuX + 'px'
@@ -200,6 +218,7 @@ setInterval(() => {
         document.getElementById('corpo').style.width = larguraMenu + 'px'
         document.getElementById('corpo').style.fontSize = optionsFontSize + 'px'
         document.getElementById('corpo').style.maxHeight = (25 * maxOptions) + 'px'
+        document.getElementById('corpo').style.background = bgColor
     }
     if (document.getElementById('infoBox')) {
         var topo = document.getElementById('corpo').offsetHeight +
@@ -213,8 +232,9 @@ setInterval(() => {
         document.getElementById('infoBox').style.fontSize = (optionsFontSize - 3) + 'px'
     }
 
-}, 1);
-loops++
+})
+
+
 
 
 
@@ -230,41 +250,44 @@ function addOption(text, info = '', on_click = () => { }) {
 
     //opt.style.width = '190px'
     opt.style.padding = '5px'
-    opt.style.background = bgColor
+    opt.style.background = 'transparent'
     opt.style.color = fontColor
     opt.style.fontSize = optionsFontSize + 'px'
     opt.style.fontFamily = 'Segoe UI'
     opt.style.cursor = 'pointer'
     opt.innerHTML = rockstarTag(text)
 
-    //usar no booloption
-    // setInterval(() => {
-    //     opt.innerHTML = boleta
-    // }, 1);
-    //loops++
-
-
-
     document.getElementById('corpo').append(opt)
 
     totalOptions++
     var opcaoid = totalOptions;
 
+    var mouseEmCima = false
+
     opt.addEventListener('mouseleave', () => {
-        opt.style.background = 'transparent'
-        opt.style.color = fontColor
-        textoInfo = ''
-        currentOption = 0
+        mouseEmCima = false
     })
     opt.addEventListener('mouseover', () => {
-        opt.style.background = 'linear-gradient(to right,'+scrollerColor+', transparent)'
-        opt.style.color = bgColor
-        currentOption = opcaoid
-        textoInfo = rockstarTag(info)
+        mouseEmCima = true
     })
     opt.addEventListener('click', (e) => {
         on_click(e)
     })
+
+    createHook(() => {
+        if (mouseEmCima) {
+            opt.style.background = 'linear-gradient(to right,' + scrollerColor + ', transparent)'
+            opt.style.color = hoverFontColor
+            currentOption = opcaoid
+            textoInfo = rockstarTag(info)
+        } else {
+            opt.style.background = 'transparent'
+            opt.style.color = fontColor
+            textoInfo = ''
+            currentOption = 0
+        }
+    }, 1);
+
     return opt
 }
 
@@ -278,28 +301,28 @@ function addOption(text, info = '', on_click = () => { }) {
 
 
 
-function addInt(texto, vari,min,max, info = '', voids =()=>{}) {
+function addInt(texto, vari, min, max, info = '', voids = () => { }) {
 
     var id = totalOptions
 
     const v = addOption(texto + `
-        <div style="color:${fontColor};float:right" id="aumentar_${id}">></div>
+        <div style="color:${fontColor};float:right" id="aumentar_${id}">&nbsp;&nbsp;&#9654;</div>
         <div style="color:${fontColor};float:right" id="var_${id}">&nbsp;${vari}&nbsp;</div>
-        <div style="color:${fontColor};float:right" id="diminuir_${id}"><</div>
-        `,info)
+        <div style="color:${fontColor};float:right" id="diminuir_${id}">&#9664;&nbsp;&nbsp;</div>
+        `, info)
 
-        setInterval(() => {
-            if(document.getElementById('var_'+id)){
-                document.getElementById('var_'+id).innerHTML= '&nbsp;'+vari+'&nbsp;'
-            }
-            
-        }, 100);
+    createHook(() => {
+        if (document.getElementById('var_' + id)) {
+            document.getElementById('var_' + id).innerHTML = '&nbsp;' + vari + '&nbsp;'
+        }
+
+    }, 100);
 
     document.getElementById('diminuir_' + id).addEventListener('click', (e) => {
         e.stopPropagation()
-        if(vari == min){
-            vari=max
-        }else{
+        if (vari == min) {
+            vari = max
+        } else {
             vari--
         }
         voids(vari)
@@ -307,15 +330,15 @@ function addInt(texto, vari,min,max, info = '', voids =()=>{}) {
 
     document.getElementById('aumentar_' + id).addEventListener('click', (e) => {
         e.stopPropagation()
-        if(vari == max){
-            vari=min
-        }else{
+        if (vari == max) {
+            vari = min
+        } else {
             vari++
         }
         voids(vari)
     })
 
-    loops++
+
     return v
 }
 
@@ -323,23 +346,18 @@ function addInt(texto, vari,min,max, info = '', voids =()=>{}) {
 
 
 
-
-function addBool(texto, vari, info = '', voids =()=>{}) {
-    const v = addOption(texto + '<span style="float:right">' + vari + '</span>',info, () => {
+function addBool(texto, vari, info = '', voids = () => { }) {
+    const v = addOption(texto + '<span style="float:right">&#128308;</span>', info, () => {
         vari = !vari
         voids(vari)
     })
-    
-    
-    setInterval(() => {
+    createHook(() => {
         if (vari) {
-            v.innerHTML = rockstarTag(texto + '<span style="float:right">~g~on~s~/off</span>')
+            v.innerHTML = rockstarTag(texto + '<span style="float:right;color:lime">' + boolIcon + '</span>')
         } else {
-            v.innerHTML = rockstarTag(texto + '<span style="float:right">on/~r~off~s~</span>')
+            v.innerHTML = rockstarTag(texto + '<span style="float:right;color:red">' + boolIcon + '</span>')
         }
-
-    }, 1);
-    loops++
+    });
     return v
 }
 
@@ -357,10 +375,10 @@ function rockstarTag(str) {
 
 function addSubmenu(texto, submenu_function, info = '', voids = () => { }) {
     const v = addOption(texto + `
-    <b style="color:${fontColor};float:right">>></b>
+    <b style="color:${fontColor};float:right">&#9654;</b>
     `, info, () => {
-        textoInfo=''
-        document.getElementById('corpo').innerHTML=''
+        textoInfo = ''
+        document.getElementById('corpo').innerHTML = ''
         voids()
         submenu_function()
     })
@@ -382,71 +400,71 @@ function addSideBox(w, h) {
     document.body.append(lateral)
 }
 
-function addColor(texto,valor, info = '', voids = () => { }) {
+function addColor(texto, valor, info = '', voids = () => { }) {
     var id = totalOptions
     const v = addOption(texto + `
     <div style="float:right"><input type="color" value="${valor}" id="${id}"></div>
     `, info)
-    
-    document.getElementById(id).addEventListener('input',(e)=>{
+
+    document.getElementById(id).addEventListener('input', (e) => {
         voids(document.getElementById(id).value)
     })
     return v
 }
 
 
-function addRange(texto,valor,min,max, info = '', voids = () => { }) {
+function addRange(texto, valor, min, max, info = '', voids = () => { }) {
     var id = totalOptions
     const v = addOption(texto + `
-    <div style="float:right"><input type="range" style="height:${optionsFontSize-3}px;" value="${valor}" min="${min}"  max="${max}" id="${id}"></div>
+    <div style="float:right"><input type="range" style="height:${optionsFontSize - 3}px;" value="${valor}" min="${min}"  max="${max}" id="${id}"></div>
     `, info)
-    
-    document.getElementById(id).addEventListener('input',(e)=>{
+
+    document.getElementById(id).addEventListener('input', (e) => {
         voids(document.getElementById(id).value)
     })
     return v
 }
 
-function addNumber(texto,valor,min,max, info = '', voids = () => { }) {
+function addNumber(texto, valor, min, max, info = '', voids = () => { }) {
     var id = totalOptions
     const v = addOption(texto + `
-    <div style="float:right"><input type="number" style="height:${optionsFontSize-3}px;border:1px solid ${fontColor};color:${fontColor}" value="${valor}" min="${min}"  max="${max}" id="${id}"></div>
+    <div style="float:right"><input type="number" style="height:${optionsFontSize - 3}px;border:1px solid ${fontColor};color:${fontColor};text-align:center" value="${valor}" min="${min}"  max="${max}" id="${id}"></div>
     `, info)
-    
-    document.getElementById(id).addEventListener('input',(e)=>{
+
+    document.getElementById(id).addEventListener('input', (e) => {
         voids(document.getElementById(id).value)
     })
     return v
 }
- 
 
-function addText(texto,valor,placeholder, info = '', voids = () => { }) {
+
+function addText(texto, valor, placeholder, info = '', voids = () => { }) {
     var id = totalOptions
     const v = addOption(texto + `
     <div style="float:right">
-    <input type="text" style="height:${optionsFontSize-3}px;border:1px solid ${fontColor};color:${fontColor}" value="${valor}" placeholder="${placeholder}"  id="${id}">
+    <input type="text" style="height:${optionsFontSize - 3}px;border:1px solid ${fontColor};color:${fontColor}" value="${valor}" placeholder="${placeholder}"  id="${id}">
     </div>
     `, info)
-    
-    document.getElementById(id).addEventListener('input',(e)=>{
+
+    document.getElementById(id).addEventListener('input', (e) => {
         voids(document.getElementById(id).value)
     })
     return v
 }
 
 
-function add2Color(texto,valor1,valor2, info = '', voids = () => { }) {
+function add2Color(texto, valor1, valor2, info = '', voids = () => { }) {
     var id = totalOptions
     const v = addOption(texto + `
     <div style="float:right"><input type="color" value="${valor2}" id="2${id}"></div>
     <div style="float:right"><input type="color" value="${valor1}" id="1${id}"></div>
     `, info)
-    
-    document.getElementById('1'+id).addEventListener('input',(x,y)=>{
-        voids(document.getElementById('1'+id).value,document.getElementById('2'+id).value)
+
+    document.getElementById('1' + id).addEventListener('input', (x, y) => {
+        voids(document.getElementById('1' + id).value, document.getElementById('2' + id).value)
     })
-    document.getElementById('2'+id).addEventListener('input',(x,y)=>{
-        voids(document.getElementById('1'+id).value,document.getElementById('2'+id).value)
+    document.getElementById('2' + id).addEventListener('input', (x, y) => {
+        voids(document.getElementById('1' + id).value, document.getElementById('2' + id).value)
     })
     return v
 }
@@ -462,18 +480,18 @@ function addBreak(texto = '') {
     opt.style.fontFamily = 'Segoe UI'
     opt.style.cursor = 'pointer'
     opt.style.textAlign = 'center'
-    
-    if(texto!==''){
-        opt.innerHTML = '--&nbsp;'+rockstarTag(texto)+'&nbsp;--'
-    }else{
-        opt.innerHTML = ''+rockstarTag(texto)+'&nbsp;&nbsp;'
+
+    if (texto !== '') {
+        opt.innerHTML = '--&nbsp;' + rockstarTag(texto) + '&nbsp;--'
+    } else {
+        opt.innerHTML = '' + rockstarTag(texto) + '&nbsp;&nbsp;'
     }
-    
+
 
 
     document.getElementById('corpo').append(opt)
 
-    totalOptions++ 
+    totalOptions++
 
     opt.addEventListener('mouseover', () => {
         opt.style.background = 'transparent'
@@ -482,4 +500,99 @@ function addBreak(texto = '') {
     return opt
 }
 
+function addInfo(texto = '', centerText = false) {
+    const opt = document.createElement('div')
+    opt.style.padding = '10px'
+    opt.style.background = bgColor
+    opt.style.color = fontColor
+    opt.style.fontSize = optionsFontSize + 'px'
+    opt.style.fontFamily = 'Segoe UI'
+    opt.style.cursor = 'pointer'
+    opt.style.textAlign = 'center'
+    centerText ? opt.style.textAlign = 'center' : opt.style.textAlign = 'left'
+    opt.innerHTML = '' + rockstarTag(texto) + '&nbsp;&nbsp;'
+    document.getElementById('corpo').append(opt)
+    return opt
+}
 
+function addButton(texto, btnText, info = '', voids = () => { }) {
+    const v = addOption(texto)
+
+    const div = document.createElement('div')
+    div.style.float = 'right'
+
+    const bt = document.createElement('button')
+    bt.innerHTML = btnText
+    bt.style.cursor = 'pointer'
+    bt.style.fontSize = (optionsFontSize - 3) + 'px'
+    bt.style.color = fontColor
+    bt.style.border = '1px solid ' + fontColor
+
+    div.append(bt)
+    v.append(div)
+
+    bt.addEventListener('click', () => {
+        voids()
+    })
+    return v
+}
+
+function addTextAndButton(texto, impText, btnText, info = '', voids = () => { }) {
+    const v = addOption(texto)
+
+    const div = document.createElement('div')
+    div.style.float = 'right'
+
+    const imp = document.createElement('input')
+    imp.style.cursor = 'pointer'
+    imp.style.border = '1px solid ' + fontColor
+    imp.style.height = (optionsFontSize - 3) + 'px'
+    imp.style.fontSize = (optionsFontSize - 3) + 'px'
+    imp.style.width = (optionsFontSize * 5) + 'px'
+    imp.value = impText
+    imp.style.color = fontColor
+
+    const bt = document.createElement('button')
+    bt.innerHTML = btnText
+    bt.style.cursor = 'pointer'
+    bt.style.border = '1px solid ' + fontColor
+    bt.style.fontSize = (optionsFontSize - 3) + 'px'
+    bt.style.marginLeft = '3px'
+    bt.style.color = fontColor
+
+    div.append(imp)
+    div.append(bt)
+    v.append(div)
+
+    bt.addEventListener('click', () => {
+        voids(imp.value)
+    })
+    return v
+}
+
+function createHook(voids, time = 1) {
+    loops++
+    setInterval(() => {
+        voids()
+    }, time)
+}
+
+function fonteCursiva(s) {
+    var a = [
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+        'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
+        'U', 'V', 'W', 'X', 'Y', 'Z',
+        'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+        'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+        'u', 'v', 'w', 'x', 'y', 'z',
+    ]
+    var ponteiro = 120016//ponteiro fixo
+    for (let i = 0; i < s.length; i++) {
+        for (let i2 = 0; i2 < a.length; i2++) {
+            if (s[i] === a[i2]) {
+                s = s.replace(s[i], '&#' + (ponteiro + i2) + ';')
+            }
+        }
+    }
+    return s;
+}
